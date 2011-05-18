@@ -417,6 +417,8 @@ module ActiveRecord
 
               if column.type == :boolean
                 row[attribute_name] = (value.casecmp("true") == 0)
+              elsif column.type == :string || column.type == :text
+                row[attribute_name] = value ? value.gsub(/\\[0-3][0-7]{2}/){ |c| c[1,3].to_i(8).chr } : nil
               else
                 row[attribute_name] = value
               end
